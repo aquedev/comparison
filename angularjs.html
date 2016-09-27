@@ -20,48 +20,128 @@
 	margin: 10px;
 }
 </style>
-<body>
-	<div id="sidebar">
-		<select>
-			<option value="Fruit">Fruit</option>
-			<option value="Veg">Veg</option>
-			<option value="Both">Both</option>
-		</select>
-		<br>
-		<br>
-		<input type="checkbox">Red<br>
-		<input type="checkbox">Orange<br>
-		<input type="checkbox">Yellow<br>
-		<input type="checkbox">Green<br>
-		<input type="checkbox">Blue<br>
-		<input type="checkbox">Purple<br>
-		<br>
-		<input type="radio">Seeds<br>
-		<input type="radio">No Seeds<br>
-	</div>
-	<div id="results">
-		<div class="result">A</div>
-		<div class="result">B</div>
-		<div class="result">C</div>
-		<div class="result">D</div>
+<body ng-app="app">
+	<div ng-controller="controller">
+		<div id="sidebar">
+			<select ng-model="type">
+				<option value="">Both</option>
+				<option value="Fruit">Fruit</option>
+				<option value="Veg">Veg</option>
+			</select>
+			<br>
+			<br>
+			<label><input type="checkbox" ng-model="red" value="#ff0000" ng-click="buildcolours()">Red</label><br>
+			<label><input type="checkbox" ng-model="orange" value="#ff8000" ng-click="buildcolours()">Orange</label><br>
+			<label><input type="checkbox" ng-model="yellow" value='#ffff00' ng-click="buildcolours()">Yellow</label><br>
+			<label><input type="checkbox" ng-model="green" value='#00ff00' ng-click="buildcolours()">Green</label><br>
+			<label><input type="checkbox" ng-model="blue" value='#0000ff' ng-click="buildcolours()">Blue</label><br>
+			<label><input type="checkbox" ng-model="purple" value='#8000ff' ng-click="buildcolours()">Purple</label><br>
+			<br>
+			<label><input type="radio" value='true' ng-model="seeds">Seeds</label><br>
+			<label><input type="radio" value='false' ng-model="seeds">No Seeds</label><br>
+		</div>
+		<div id="results">
+			<div class="result" ng-repeat="product in data | filter:{'type':type} | filter:{'seeds':seeds} | myFilter | orderBy:'name'" style="background:{{product.colour}}">{{product.name}}</div>
+		</div>
 	</div>
 </body>
 <script>
-var app = angular.module("myApp", []);
-app.controller('MainController', function($scope) {	
+app = angular.module("app", []);
+colours=[];
+app.filter('myFilter',function(){
+	return function(input){
+		if(colours[0]){
+			output=[];
+			for(x=0;x<input.length;x++){
+				if(colours.indexOf(input[x].colour)!=-1){
+					output.push(input[x]);
+				}
+			}
+			return output;
+		}
+		else{
+			return input;
+		}
+	}
+})
+
+app.controller('controller', function($scope) {
+	$scope.buildcolours=function(){
+		colours=[];
+		if($scope.red){colours.push("#ff0000")}
+		if($scope.orange){colours.push("#ff8000")}
+		if($scope.yellow){colours.push("#ffff00")}
+		if($scope.green){colours.push("#00ff00")}
+		if($scope.blue){colours.push("#0000ff")}
+		if($scope.purple){colours.push("#8000ff")}
+	}
 	$scope.data=[
 		{
-				name : 'Movement Speed Up',
-				notes : ['W','W'],
-				W : "true",
-				P : "false",
-				R : "false",
-				B : "false",
-				G : "false",
-				Y : "false",
-				C : "false",
-				O : "false"
-			},
-	
+			name : 'Apple',
+			type : 'Fruit',
+			colour : '#ff0000',
+			seeds : 'true'
+		},
+		{
+			name : 'Orange',
+			type : 'Fruit',
+			colour : '#ff8000',
+			seeds : 'true'
+		},
+		{
+			name : 'Banana',
+			type : 'Fruit',
+			colour : '#ffff00',
+			seeds : 'false'
+		},
+		{
+			name : 'Pear',
+			type : 'Fruit',
+			colour : '#00ff00',
+			seeds : 'true'
+		},
+		{
+			name : 'Blueberry',
+			type : 'Fruit',
+			colour : '#0000ff',
+			seeds : 'false'
+		},
+		{
+			name : 'Grapes',
+			type : 'Fruit',
+			colour : '#8000ff',
+			seeds : 'false'
+		},
+		{
+			name : 'Pepper',
+			type : 'Veg',
+			colour : '#ff0000',
+			seeds : 'true'
+		},
+		{
+			name : 'Carrot',
+			type : 'Veg',
+			colour : '#ff8000',
+			seeds : 'false'
+		},
+		{
+			name : 'Corn',
+			type : 'Veg',
+			colour : '#ffff00',
+			seeds : 'false'
+		},
+		{
+			name : 'Cucumber',
+			type : 'Veg',
+			colour : '#00ff00',
+			seeds : 'false'
+		},
+		{
+			name : 'Aubergine',
+			type : 'Veg',
+			colour : '#8000ff',
+			seeds : 'false'
+		}
 	]
+})
 </script>
