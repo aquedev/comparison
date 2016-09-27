@@ -1,0 +1,67 @@
+<title>AngularJS</title>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+<style>
+#sidebar{
+	background: lightgrey;
+	width: 100px;
+}
+#results{
+	background: grey;
+	width: 370px;
+	position: fixed;
+	left: 110px;
+	top: 8px;
+	padding: 10px;
+}
+.result{
+	display: inline-block;
+	height: 100px;
+	width: 100px;
+	margin: 10px;
+}
+</style>
+<body>
+	<div id="sidebar">
+		<select>
+			<option value="Fruit">Fruit</option>
+			<option value="Veg">Veg</option>
+			<option value="Both">Both</option>
+		</select>
+		<br>
+		<br>
+		<input type="checkbox">Red<br>
+		<input type="checkbox">Orange<br>
+		<input type="checkbox">Yellow<br>
+		<input type="checkbox">Green<br>
+		<input type="checkbox">Blue<br>
+		<input type="checkbox">Purple<br>
+		<br>
+		<input type="radio">Seeds<br>
+		<input type="radio">No Seeds<br>
+	</div>
+	<div id="results">
+		<div class="result">A</div>
+		<div class="result">B</div>
+		<div class="result">C</div>
+		<div class="result">D</div>
+	</div>
+</body>
+<script>
+var app = angular.module("myApp", []);
+app.controller('MainController', function($scope) {	
+	$scope.data=[
+		{
+				name : 'Movement Speed Up',
+				notes : ['W','W'],
+				W : "true",
+				P : "false",
+				R : "false",
+				B : "false",
+				G : "false",
+				Y : "false",
+				C : "false",
+				O : "false"
+			},
+	
+	]
+</script>
