@@ -27,7 +27,7 @@
 <body>
 	<div id="app">
 		<div class="sidebar">
-			<select>
+			<select id="type" onchange=filter()>
 				<option value="">Both</option>
 				<option value="Fruit">Fruit</option>
 				<option value="Veg">Veg</option>
@@ -126,13 +126,22 @@ var data=[
 		seeds : 'false'
 	}
 ]
+
+var type=document.getElementById("type").value;
 var arr=[];
 for(var x=0;x<data.length;x++){
-	if(data[x].type=="Fruit"){
+	if(data[x].type.indexOf(type)>-1){
 		arr.push(<div className="result" style={{background:data[x].colour}}>{data[x].name}</div>)
 	}
 }
 var results=<div>{[arr]}</div>
 ReactDOM.render(results,document.getElementById('results'));
 
+export default class MySkills extends React.Component {
+
+function filter(){
+	console.log("DONE")
+}
+
+}
 </script>
