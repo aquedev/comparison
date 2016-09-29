@@ -1,4 +1,4 @@
-<title>AngularJS</title>
+<title>Angular</title>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
 <style>
 .sidebar{
@@ -60,11 +60,11 @@
 			<br>
 			<label><input type="radio" ng-model="seeds" value="true">Seeds</label><br>
 			<label><input type="radio" ng-model="seeds" value="false">No Seeds</label><br>
-		</div>
-		<div id="results">
+		</div><!--
+		--><div id="results">
 			<div ng-repeat="product in data | filter:{'type':type} | filter:{'seeds':seeds} | myColourFilter | orderBy:sort" class="result {{product.type}} {{product.seeds=='true'?'seeds':''}}" style="background:{{product.colour}}">{{product.name}}</div>
-		</div>
-		<div class="sidebar">
+		</div><!--
+		--><div class="sidebar">
 			Order By:
 			<br>
 			<label><input type="radio" ng-model="sort" value="name">Alphabetical</label><br>
