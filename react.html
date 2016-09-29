@@ -1,0 +1,205 @@
+<title>ReactJS</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.2/react-with-addons.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.2/react-dom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.js "></script>
+<style>
+.sidebar{
+	background: lightgrey;
+	width: 110px;
+	display: inline-block;
+	vertical-align: top;
+	padding: 5px;
+}
+#results{
+	background: grey;
+	width: 370px;
+	display: inline-block;
+	vertical-align: top;
+	padding: 10px;
+}
+.result{
+	display: inline-block;
+	height: 100px;
+	width: 100px;
+	margin: 10px;
+	position: relative;
+}
+.Fruit:after{
+	content: "F";
+	position: absolute;
+	right: 0;
+	bottom: 0;
+}
+.Veg:after{
+	content: "V";
+	position: absolute;
+	right: 0;
+	bottom: 0;
+}
+.seeds:before{
+	content: "Seeds";
+	position: absolute;
+	bottom: 0;
+}
+</style>
+<body>
+<h1>React</h1>
+	<div id="container"></div>
+</body>
+<script type="text/babel">
+var data=[
+	{
+		name : 'Cucumber',
+		type : 'Veg',
+		colour : '#00ff00',
+		seeds : 'false'
+	},
+	{
+		name : 'Apple',
+		type : 'Fruit',
+		colour : '#ff0000',
+		seeds : 'true'
+	},
+	{
+		name : 'Banana',
+		type : 'Fruit',
+		colour : '#ffff00',
+		seeds : 'false'
+	},
+	{
+		name : 'Carrot',
+		type : 'Veg',
+		colour : '#ff8000',
+		seeds : 'false'
+	},
+	{
+		name : 'Corn',
+		type : 'Veg',
+		colour : '#ffff00',
+		seeds : 'false'
+	},
+	{
+		name : 'Blueberry',
+		type : 'Fruit',
+		colour : '#0000ff',
+		seeds : 'false'
+	},
+	{
+		name : 'Pear',
+		type : 'Fruit',
+		colour : '#00ff00',
+		seeds : 'true'
+	},
+	{
+		name : 'Aubergine',
+		type : 'Veg',
+		colour : '#8000ff',
+		seeds : 'false'
+	},
+	{
+		name : 'Pepper',
+		type : 'Veg',
+		colour : '#ff0000',
+		seeds : 'true'
+	},
+	{
+		name : 'Orange',
+		type : 'Fruit',
+		colour : '#ff8000',
+		seeds : 'true'
+	},
+	{
+		name : 'Grapes',
+		type : 'Fruit',
+		colour : '#8000ff',
+		seeds : 'false'
+	}
+]
+var Results = React.createClass({
+	getInitialState: function(){
+		return{
+			type:"",
+			colour:["#ff0000","#ff8000","#ffff00","#00ff00","#0000ff","#8000ff"],
+			seeds:""
+		}
+	},
+	changeType: function(set){
+		var type = document.getElementById("type").value;
+		this.setState({ type : type })
+	},
+	changeColour: function(){
+		var colouroptions = document.querySelectorAll("input[type=checkbox]");
+		var colours=[];
+		for(var x=0;x<colouroptions.length;x++){
+			if(colouroptions[x].checked){
+				colours.push(colouroptions[x].value)
+			}
+		}
+		if(colours.length==0){
+			for(var x=0;x<colouroptions.length;x++){
+				colours.push(colouroptions[x].value)
+			}
+		}
+		this.setState({ colour : colours })
+	},
+	changeSeeds: function(){
+		var seeds = document.querySelectorAll("input[type=radio]");
+		if(seeds[0].checked){seeds="true"}
+		else if(seeds[1].checked){seeds="false"}
+		else{seeds=""}
+		this.setState({ seeds : seeds })
+	},
+	reRender: function(){
+		this.setState({})
+	},
+	render: function () {
+		var order = document.querySelectorAll("[name=order]");
+		if(order.length!=0){
+			if(order[0].checked){data=data.sort(function(a,b){if(a.name<b.name){return -1}if(a.name>b.name){return 1}})}
+			if(order[1].checked){data=data.sort(function(a,b){if(a.type<b.type){return -1}if(a.type>b.type){return 1}})}
+			if(order[2].checked){data=data.sort(function(a,b){if(a.colour<b.colour){return -1}if(a.colour>b.colour){return 1}})}
+			if(order[3].checked){data=data.sort(function(a,b){if(a.seeds<b.seeds){return -1}if(a.seeds>b.seeds){return 1}})}
+		}
+		var arr=[];
+		for(var x=0;x<data.length;x++){
+			if(data[x].type.indexOf(this.state.type)>-1 && this.state.colour.indexOf(data[x].colour)>-1 && data[x].seeds.indexOf(this.state.seeds)>-1){
+				arr.push(<div className={"result "+data[x].type+' '+(data[x].seeds=='true' ? 'seeds' : '')} style={{background:data[x].colour}}>{data[x].name}</div>)
+			}
+		}
+		return(
+			<div>
+				<div className="sidebar">
+					<select id="type" onChange={this.changeType}>
+						<option value="">Both</option>
+						<option value="Fruit">Fruit</option>
+						<option value="Veg">Veg</option>
+					</select>
+					<br />
+					<br />
+					<label><input type="checkbox" value="#ff0000" onChange={this.changeColour} />Red</label><br />
+					<label><input type="checkbox" value="#ff8000" onChange={this.changeColour} />Orange</label><br />
+					<label><input type="checkbox" value="#ffff00" onChange={this.changeColour} />Yellow</label><br />
+					<label><input type="checkbox" value="#00ff00" onChange={this.changeColour} />Green</label><br />
+					<label><input type="checkbox" value="#0000ff" onChange={this.changeColour} />Blue</label><br />
+					<label><input type="checkbox" value="#8000ff" onChange={this.changeColour} />Purple</label><br />
+					<br />
+					<label><input type="radio" value="true" name="seeds" onChange={this.changeSeeds} />Seeds</label><br />
+					<label><input type="radio" value="false" name="seeds" onChange={this.changeSeeds} />No Seeds</label><br />
+				</div>
+				<div id="results">
+					{[arr]}
+				</div>
+				<div className="sidebar">
+					Order By:
+					<br />
+					<label><input type="radio" value="name" name="order" onChange={this.reRender} />Alphabetical</label><br />
+					<label><input type="radio" value="type" name="order" onChange={this.reRender} />Type</label><br />
+					<label><input type="radio" value="colour" name="order" onChange={this.reRender} />Colour</label><br />
+					<label><input type="radio" value="seeds" name="order" onChange={this.reRender} />Seeds</label><br />
+				</div>
+			</div>
+		)
+	}
+});
+ReactDOM.render(<Results />,document.getElementById('container'));
+</script>
