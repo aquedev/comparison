@@ -34,15 +34,15 @@
 			</select>
 			<br>
 			<br>
-			<label><input type="checkbox" value="#ff0000">Red</label><br>
-			<label><input type="checkbox" value="#ff8000">Orange</label><br>
-			<label><input type="checkbox" value="#ffff00">Yellow</label><br>
-			<label><input type="checkbox" value="#00ff00">Green</label><br>
-			<label><input type="checkbox" value="#0000ff">Blue</label><br>
-			<label><input type="checkbox" value="#8000ff">Purple</label><br>
+			<label><input type="checkbox" value="#ff0000" onchange=filter()>Red</label><br>
+			<label><input type="checkbox" value="#ff8000" onchange=filter()>Orange</label><br>
+			<label><input type="checkbox" value="#ffff00" onchange=filter()>Yellow</label><br>
+			<label><input type="checkbox" value="#00ff00" onchange=filter()>Green</label><br>
+			<label><input type="checkbox" value="#0000ff" onchange=filter()>Blue</label><br>
+			<label><input type="checkbox" value="#8000ff" onchange=filter()>Purple</label><br>
 			<br>
-			<label><input type="radio" value="true">Seeds</label><br>
-			<label><input type="radio" value="false">No Seeds</label><br>
+			<label><input type="radio" value="true" name="seeds" onchange=filter()>Seeds</label><br>
+			<label><input type="radio" value="false" name="seeds" onchange=filter()>No Seeds</label><br>
 		</div>
 		<div id="results">
 			<div class="result" style="background:"></div>
@@ -50,10 +50,10 @@
 		<div class="sidebar">
 			Order By:
 			<br>
-			<label><input type="radio" value="name">Alphabetical</label><br>
-			<label><input type="radio" value="type">Type</label><br>
-			<label><input type="radio" value="colour">Colour</label><br>
-			<label><input type="radio" value="seeds">Seeds</label><br>
+			<label><input type="radio" value="name" name="order" onchange=filter()>Alphabetical</label><br>
+			<label><input type="radio" value="type" name="order" onchange=filter()>Type</label><br>
+			<label><input type="radio" value="colour" name="order" onchange=filter()>Colour</label><br>
+			<label><input type="radio" value="seeds" name="order" onchange=filter()>Seeds</label><br>
 		</div>
 	</div>
 </body>
@@ -130,13 +130,37 @@ var data=[
 	}
 ]
 filter = function() {
-	var type=document.getElementById("type").value;
+	var type = document.getElementById("type").value;
+	var colouroptions = document.querySelectorAll("input[type=checkbox]");
+	var colours=[];
+	for(var x=0;x<colouroptions.length;x++){
+		if(colouroptions[x].checked){
+			colours.push(colouroptions[x].value)
+		}
+	}
+	if(colours.length==0){
+		for(var x=0;x<colouroptions.length;x++){
+			colours.push(colouroptions[x].value)
+		}
+	}
+	var seeds = document.querySelectorAll("input[type=radio]");
+	if(seeds[0].checked){seeds="true"}
+	else if(seeds[1].checked){seeds="false"}
+	else{seeds=""}
+	var order = document.querySelectorAll("[name=order]");
+	if(order[0].checked){data=data.sort(function(a,b){if(a.name<b.name){return -1}if(a.name>b.name){return 1}})}
+	if(order[1].checked){data=data.sort(function(a,b){if(a.type<b.type){return -1}if(a.type>b.type){return 1}})}
+	if(order[2].checked){data=data.sort(function(a,b){if(a.colour<b.colour){return -1}if(a.colour>b.colour){return 1}})}
+	if(order[3].checked){data=data.sort(function(a,b){if(a.seeds<b.seeds){return -1}if(a.seeds>b.seeds){return 1}})}
 	var arr=[];
 	for(var x=0;x<data.length;x++){
-		if(data[x].type.indexOf(type)>-1){
+		if(data[x].type.indexOf(type)>-1 && colours.indexOf(data[x].colour)>-1 && data[x].seeds.indexOf(seeds)>-1){
 			arr.push(<div className="result" style={{background:data[x].colour}}>{data[x].name}</div>)
 		}
 	}
+
+	
+	
 	var results=<div>{[arr]}</div>;
 	ReactDOM.render(results,document.getElementById('results'));
 }
