@@ -20,9 +20,28 @@
 	height: 100px;
 	width: 100px;
 	margin: 10px;
+	position: relative;
+}
+.Fruit:after{
+	content: "F";
+	position: absolute;
+	right: 0;
+	bottom: 0;
+}
+.Veg:after{
+	content: "V";
+	position: absolute;
+	right: 0;
+	bottom: 0;
+}
+.seeds:before{
+	content: "Seeds";
+	position: absolute;
+	bottom: 0;
 }
 </style>
 <body ng-app="app">
+	<h1>Angular</h1>
 	<div ng-controller="controller">
 		<div class="sidebar">
 			<select ng-model="type">
@@ -43,7 +62,7 @@
 			<label><input type="radio" ng-model="seeds" value="false">No Seeds</label><br>
 		</div>
 		<div id="results">
-			<div class="result" ng-repeat="product in data | filter:{'type':type} | filter:{'seeds':seeds} | myFilter | orderBy:sort" style="background:{{product.colour}}">{{product.name}}</div>
+			<div ng-repeat="product in data | filter:{'type':type} | filter:{'seeds':seeds} | myColourFilter | orderBy:sort" class="result {{product.type}} {{product.seeds=='true'?'seeds':''}}" style="background:{{product.colour}}">{{product.name}}</div>
 		</div>
 		<div class="sidebar">
 			Order By:
@@ -58,7 +77,7 @@
 <script>
 app = angular.module("app", []);
 colours=[];
-app.filter('myFilter',function(){
+app.filter('myColourFilter',function(){
 	return function(input){
 		if(colours[0]){
 			output=[];
