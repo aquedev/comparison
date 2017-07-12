@@ -62,7 +62,7 @@
 			<label><input type="radio" ng-model="seeds" value="false">No Seeds</label><br>
 		</div><!--
 		--><div id="results">
-			<div ng-repeat="product in data | filter:{'type':type} | filter:{'seeds':seeds} | myColourFilter | orderBy:sort" class="result {{product.type}} {{product.seeds=='true'?'seeds':''}}" style="background:{{product.colour}}">{{product.name}}</div>
+			<div ng-repeat="product in filtered = ( data | filter:{'type':type} | filter:{'seeds':seeds} | myColourFilter | orderBy:sort )" class="result {{product.type}} {{product.seeds=='true'?'seeds':''}}" style="background:{{product.colour}}">{{product.name}}</div>
 		</div><!--
 		--><div class="sidebar">
 			Order By:
@@ -71,6 +71,8 @@
 			<label><input type="radio" ng-model="sort" value="type">Type</label><br>
 			<label><input type="radio" ng-model="sort" value="colour">Colour</label><br>
 			<label><input type="radio" ng-model="sort" value="seeds">Seeds</label><br>
+			<br>
+			{{filtered.length + " items"}}
 		</div>
 	</div>
 </body>
